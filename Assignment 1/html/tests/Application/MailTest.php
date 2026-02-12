@@ -46,7 +46,7 @@ class MailTest extends TestCase {
 
     public function deleteGetMailFail(){
         $mail = new Mail($this->pdo);
-        $id = $mail->deleteMail(null, null);
+        $id = $mail->deleteMail(1, null, null);
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
@@ -75,7 +75,7 @@ class MailTest extends TestCase {
 
     public function deleteGetMailPass(){
         $mail = new Mail($this->pdo);
-        $id = $mail->deleteMail("New Subject", "New Body");
+        $id = $mail->deleteMail(1, "New Subject", "New Body");
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }

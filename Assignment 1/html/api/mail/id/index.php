@@ -20,7 +20,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'DELETE'){
     $json = file_get_contents("php://input");
     $data = json_decode($json, true);
 
-    $page->item($mail->deleteMail($data['subject'], $data['body']));
+    $page->item($mail->deleteMail($id['id'], $data['subject'], $data['body']));
     exit;
 }
 

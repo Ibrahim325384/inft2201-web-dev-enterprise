@@ -39,7 +39,7 @@ class Mail {
         return $stmt->fetchColumn();
     }
 
-    public function deleteMail($subject, $body) {
+    public function deleteMail($id, $subject, $body) {
         $stmt = $this->pdo->prepare("DELETE (subject, body) VALUES (?, ?) RETURNING id");
         $stmt->execute([$subject, $body]);
 
