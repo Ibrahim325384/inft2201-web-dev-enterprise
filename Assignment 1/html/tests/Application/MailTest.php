@@ -22,17 +22,60 @@ class MailTest extends TestCase {
         ");
     }
 
-    public function testCreateMail() {
+    // TDD fail test cases
+    public function testCreateMailFail() {
+        $mail = new Mail($this->pdo);
+        $id = $mail->createMail(null, null);
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    public function testGetMailFail(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->getMail("A");
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    public function updateGetMailFail(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->updateMail(null, null);
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    public function deleteGetMailFail(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->deleteMail(null, null);
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    // TDD passing test cases
+    public function testCreateMailPass() {
         $mail = new Mail($this->pdo);
         $id = $mail->createMail("Alice", "Hello world");
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
 
-    // TDD fail test cases
-    public function testGetMail(){
+    public function testGetMailPass(){
         $mail = new Mail($this->pdo);
-        $id = $mail->getMail("A");
+        $id = $mail->getMail(1);
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    public function updateGetMailPass(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->updateMail("New Subject", "New Body");
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+
+    public function deleteGetMailPass(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->deleteMail("New Subject", "New Body");
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
