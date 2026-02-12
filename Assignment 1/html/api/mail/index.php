@@ -25,5 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $page->item($mail->createMail($data['subject'], $data['body']));
     exit;
 }
+else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+    $json = file_get_contents("php://input");
+    $data = json_decode($json, true);
+
+    $page->list($mail->getAllMail($id['id']));
+    exit;
+}
 
 $page->badRequest();

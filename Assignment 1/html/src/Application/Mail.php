@@ -32,9 +32,9 @@ class Mail {
         return $stmt->fetchColumn();
     }
 
-    public function updateMail($subject, $body) {
+    public function updateMail($id, $subject, $body) {
         $stmt = $this->pdo->prepare("UPDATE mail (subject, body) VALUES (?, ?) RETURNING id");
-        $stmt->execute([$subject, $body]);
+        $stmt->execute([$id, $subject, $body]);
 
         return $stmt->fetchColumn();
     }

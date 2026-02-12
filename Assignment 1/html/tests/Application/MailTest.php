@@ -39,7 +39,7 @@ class MailTest extends TestCase {
 
     public function updateGetMailFail(){
         $mail = new Mail($this->pdo);
-        $id = $mail->updateMail(null, null);
+        $id = $mail->updateMail(null, null, null);
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
@@ -68,7 +68,7 @@ class MailTest extends TestCase {
 
     public function updateGetMailPass(){
         $mail = new Mail($this->pdo);
-        $id = $mail->updateMail("New Subject", "New Body");
+        $id = $mail->updateMail(1, "New Subject", "New Body");
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
