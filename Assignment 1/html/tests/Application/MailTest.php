@@ -28,4 +28,13 @@ class MailTest extends TestCase {
         $this->assertIsInt($id);
         $this->assertEquals(1, $id);
     }
+
+    // TDD fail test cases
+    public function testGetMail(){
+        $mail = new Mail($this->pdo);
+        $id = $mail->getMail("A");
+        $this->assertIsInt($id);
+        $this->assertEquals(1, $id);
+    }
+    
 }
