@@ -33,21 +33,31 @@ http
             const lines = fileContent.split('\n');
 
             return users.some(line => {
-            const [storedUser, storedPass] = line.trim().split(':');
+            const [storedUser, storedPass, storedID, storedRole] = line.trim().split(':');
             return storedUser === username && storedPass === password;
             });
 
-
+            const match = users.find(u => u.username === username && u.password === password);
+            if (match){
+              const token = jwt.sign(
+                {userID: match.id,
+                role: match.role} 
+              )
+            }
+            
             jwt.sign(payload, "<YOUR_RANDOM_SECRET>", { expiresIn: "1h" })
 
             // return a 404 error if the username isn't found
-            res.writeHead(404, { "Content-Type": "text/plain" });
-            res.end(`${body.username} not found\n`);
-
-            // return a 401 error if the username is found but the password doesn't match
-            res.writeHead(401, { "Content-Type": "text/plain" });
-            res.end(`${body.username} incorrect password\n`);
-
+            if (!match && storedUser != username){
+              res.writeHead(404, { "Content-Type": "text/plain" });
+              res.end(`${body.username} not found\n`);
+            }
+            else if (!match && storedUser == username && storedPass != password){
+                 // return a 401 error if the username is found but the password doesn't match
+                  res.writeHead(401, { "Content-Type": "text/plain" });
+                  res.end(`${body.username} incorrect password\n`);
+            }
+    
             // on success, return an encoded userId and role using your JWT_SECRET.
             // https://www.npmjs.com/package/jsonwebtoken
           } catch (err) {
