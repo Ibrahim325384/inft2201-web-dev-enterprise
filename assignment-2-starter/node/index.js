@@ -2,7 +2,7 @@ import http from "http";
 import fs from "fs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "SET_A_RANDOM_STRING_FOR_FULL_MARKS";
+const JWT_SECRET = "SECRET_STRING";
 
 http
   .createServer((req, res) => {
@@ -24,16 +24,29 @@ http
             body = JSON.parse(body);
 
             // handle a login attempt
+            
 
             // open up our "database" (actually a flat file called ./users.txt)
             // to see if there is a username/password combination that matches
             // body.username and body.password
+            const fileContent = fs.readFileSync('users.txt', 'utf8');
+            const lines = fileContent.split('\n');
+
+            return users.some(line => {
+            const [storedUser, storedPass] = line.trim().split(':');
+            return storedUser === username && storedPass === password;
+            });
+
+
+            jwt.sign(payload, "<YOUR_RANDOM_SECRET>", { expiresIn: "1h" })
 
             // return a 404 error if the username isn't found
             res.writeHead(404, { "Content-Type": "text/plain" });
             res.end(`${body.username} not found\n`);
 
             // return a 401 error if the username is found but the password doesn't match
+            res.writeHead(401, { "Content-Type": "text/plain" });
+            res.end(`${body.username} incorrect password\n`);
 
             // on success, return an encoded userId and role using your JWT_SECRET.
             // https://www.npmjs.com/package/jsonwebtoken
@@ -54,3 +67,6 @@ http
   .listen(8000);
 
 console.log("listening on port 8000");
+
+
+
