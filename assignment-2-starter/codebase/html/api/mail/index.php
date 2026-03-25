@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($authentication['Authorizatio
     if ($verifier->role == 'admin'){
              $data['userID'] = $mail->getAllMail($id);
              $data['userID'] = $mail->createMail($data['name'], $data['message']);
-             // NOTE TO SELF, CHECK OVER
+             
              $data['name'] = "...";
              $data['id'] = 1;
              $data['message'] = "...";
@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($authentication['Authorizatio
         else if ($verifier->role == 'user'){
             $verifier->userId = $mail->listMail();
             $verifier->userId = $mail->createMail($data['name'], $data['message']);
+            
             $data['userID'] = 2;
         }
 } else {
