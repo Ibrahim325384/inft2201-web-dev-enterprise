@@ -5,6 +5,7 @@ use Application\Mail;
 use Application\Database;
 use Application\Page;
 use Application\Verifier;
+use PhpParser\Node\Name;
 
 $database = new Database('prod');
 $page = new Page();
@@ -40,10 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($authentication['Authorizatio
     if ($verifier->role == 'admin'){
              $data['userID'] = $mail->getAllMail($id);
              $data['userID'] = $mail->createMail($data['name'], $data['message']);
+             // NOTE TO SELF, CHECK OVER
+             $data['name'] = "...";
+             $data['id'] = 1;
+             $data['message'] = "...";
+             $data['userID'] = 1;
+
         }
         else if ($verifier->role == 'user'){
             $verifier->userId = $mail->listMail();
             $verifier->userId = $mail->createMail($data['name'], $data['message']);
+            $data['userID'] = 2;
         }
 } else {
     $page->badRequest();
