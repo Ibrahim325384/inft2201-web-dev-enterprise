@@ -13,7 +13,9 @@ function loadMail(req, res, next) {
 
   if (!mail) {
     // TODO: create a "not found" error object and pass to next(err)
-    return next(new Error("Mail not found (placeholder error, customize me)"));
+    const err = new Error("Mail not found");
+    err.statusCode = 404;
+    return next(err);
   }
 
   req.mail = mail;
