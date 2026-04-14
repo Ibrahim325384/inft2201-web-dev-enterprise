@@ -10,14 +10,40 @@ module.exports = function errorHandler(err, req, res, next) {
   // - Use correct HTTP status codes based on the type of error
   //   (you can attach a statusCode on your custom error objects).
   // - Include req.requestId in the response if available.
+  
+  const requestId = req.requestId || "unknown";
+  const timestamp = new Date().toISOString();
+
+  let statusCode = 500;
+  let error = "Internal Server Error";
+  let message = "An unexpected error occurred.";
+
+  if (err.isOperational) {
+    statusCode = err.statusCode || 400;
+
+    if (statusCode === 400) error = "Bad Request";
+    else if (statusCode === 404) error = "Not Found";
+    else if (statusCode === 403) error = "Forbidden";
+    else if (statusCode === 429) error = "Too Many Requests";
+    else if (statusCode === 401) error = "Unathorized";
+
+    message = err.message;
+  } else {
+    // Programmer error: log full details for developers
+    console.error("PROGRAMMER ERROR:", {
+      requestId,
+      message: err.message,
+      stack: err.stack
+    });
+  }
 
   console.error("Unhandled error for request", req.requestId, err);
 
-  res.status(500).json({
-    error: "InternalServerError",
-    message: "An unexpected error occurred.",
-    statusCode: 500,
-    requestId: req.requestId || null,
-    timestamp: new Date().toISOString()
+  res.status(statusCode).json({
+    error,
+    message,
+    statusCode,
+    requestId,
+    timestamp
   });
 };
