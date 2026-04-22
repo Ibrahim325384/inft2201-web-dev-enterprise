@@ -12,9 +12,31 @@ const buckets = new Map();
 // shape: key -> { count, windowStart }
 
 module.exports = function rateLimit(req, res, next) {
-  // TODO: implement a simple rolling or fixed-window rate limiting strategy.
-  // - Decide on a key: IP-based (req.ip) OR token-based (req.user?.userId).
-  // - Track count within a time window.
-  // - On exceed, create a rate-limit error and pass to next(err).
+const max = parseInt(process.env.RATE_LIMIT_MAX) || 5;
+  const window = parseInt(process.env.RATE_LIMIT_WINDOW_SECONDS) || 20;
+
+  const key = req.ip;
+  const now = Date.now();
+
+  // if key doesn't exist or window has expired, reset it
+  if (!buckets.has(key) || (now - buckets.get(key).windowStart) / 1000 > window) {
+    buckets.set(key, {
+      count: 0,
+      windowStart: now
+    });
+  }
+
+  // increment the count
+  const bucket = buckets.get(key);
+  bucket.count++;
+
+  // enforce the limit
+  if (bucket.count > max) {
+    const err = new Error("Too Many Requests");
+    err.statusCode = 429;
+    err.isOperational = true;
+    return next(err);
+  }
+  
   next();
 };
