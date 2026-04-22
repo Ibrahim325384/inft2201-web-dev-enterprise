@@ -2,14 +2,6 @@
 // This should be the LAST app.use(...) in server.js.
 
 module.exports = function errorHandler(err, req, res, next) {
-  // TODO: Implement centralized error handling.
-  // Requirements:
-  // - Do NOT leak stack traces or internal details to the client.
-  // - Always return a consistent JSON structure, e.g.:
-  //   { error, message, statusCode, requestId, timestamp }
-  // - Use correct HTTP status codes based on the type of error
-  //   (you can attach a statusCode on your custom error objects).
-  // - Include req.requestId in the response if available.
   
   const requestId = req.requestId || "unknown";
   const timestamp = new Date().toISOString();
