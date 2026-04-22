@@ -6,6 +6,7 @@ module.exports = function authorize(policy) {
     if (policy(req.user, req.mail)) return next();
     const err = new Error("Forbidden");
     err.statusCode = 403;
+    err.isOperational = true;
     next(err);;
   };
 };

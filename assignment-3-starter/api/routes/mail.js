@@ -15,6 +15,7 @@ function loadMail(req, res, next) {
     // TODO: create a "not found" error object and pass to next(err)
     const err = new Error("Mail not found");
     err.statusCode = 404;
+    err.isOperational = true;
     return next(err);
   }
 
@@ -22,16 +23,11 @@ function loadMail(req, res, next) {
   next();
 }
 
-// GET /mail/:id
-// Requirements:
-// - Must be authenticated (JWT)
-// - Must satisfy canViewMail policy (admin OR owner)
 router.get("/:id",
   authenticateJWT,
   loadMail,
   authorize(canViewMail),
   (req, res) => {
-    // At this point, user is authenticated and authorized.
     res.json(req.mail);
   }
 );

@@ -6,6 +6,9 @@ Briefly describe what this API does and the main use case.
 
 - Example: “This API provides authenticated access to mail messages for a corporate mail system, with role-based access control, logging, rate limiting, and centralized error handling.”
 
+- "This API authenticates users and gives them authorization based on their role. 
+Furthermore it centralizes all the error handling and implements rate limiting."
+
 ---
 
 ## 2. Authentication
@@ -36,6 +39,9 @@ Briefly describe what this API does and the main use case.
 
 Mention any expiry behavior (e.g., tokens are valid for 1 hour).
 
+- Tokens expire in 1 hour and they are needed in the authorization header 
+to get access to any protected routes
+
 ---
 
 ## 3. Roles & Access Rules
@@ -56,6 +62,8 @@ You can include a simple matrix:
 | `/mail/:id`    | GET    | ✅ all mail | ✅ own mail only |
 | `/auth/login`  | POST   | ✅ | ✅ |
 | `/status`      | GET    | ✅ | ✅ |
+
+- An admin can view any mail message while a normal user can only see their own
 
 ---
 

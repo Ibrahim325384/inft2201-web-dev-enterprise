@@ -16,6 +16,7 @@ router.post("/login", (req, res, next) => {
   if (!user) {
     const err = new Error("Invalid credentials");
     err.statusCode = 401;
+    err.isOperational = true;
     return next(err);
   }
 

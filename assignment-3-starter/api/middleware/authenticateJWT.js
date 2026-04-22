@@ -9,6 +9,7 @@ module.exports = function authenticateJWT(req, res, next) {
   if (!header) {
     const err = new Error("Missing Authorization header");
     err.statusCode = 401;
+    err.isOperational = true;
     return next(err);
   }
 
@@ -19,6 +20,7 @@ module.exports = function authenticateJWT(req, res, next) {
     next();
   } catch (err) {
     err.statusCode = 401;
+    err.isOperational = true;
     next(err);
   }
 };

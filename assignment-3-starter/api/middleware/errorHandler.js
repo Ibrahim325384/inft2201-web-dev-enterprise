@@ -21,7 +21,6 @@ module.exports = function errorHandler(err, req, res, next) {
 
     message = err.message;
   } else {
-    // Programmer error: log full details for developers
     console.error("PROGRAMMER ERROR:", {
       requestId,
       message: err.message,
