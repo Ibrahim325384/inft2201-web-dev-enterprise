@@ -7,5 +7,5 @@ const isAdmin = require("./isAdmin");
 const ownsResource = require("./ownsResource");
 
 module.exports = function canViewMail(user, mail) {
-  isAdmin(user) || ownsResource(user, mail);
+  return isAdmin(user) || ownsResource(user, mail);
 };

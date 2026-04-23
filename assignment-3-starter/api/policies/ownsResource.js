@@ -2,5 +2,7 @@
 // Returns true if mail.userId === user.userId.
 
 module.exports = function ownsResource(user, mail) {
-  mail && mail.userId === user.userId;
+  console.log("user.userId:", user.userId);
+  console.log("mail.userId:", mail.userId);
+  return mail && mail.userId === user.userId;
 };

@@ -63,7 +63,17 @@ You can include a simple matrix:
 | `/auth/login`  | POST   | ✅ | ✅ |
 | `/status`      | GET    | ✅ | ✅ |
 
-- An admin can view any mail message while a normal user can only see their own
+- Admin
+  - Can view any mail
+
+- user1
+  - Can only see their own mail
+
+- user2
+  - Can only see their own mail
+
+- Invalid login
+  - Doesn't exist, so gives error message 
 
 ---
 
@@ -214,6 +224,20 @@ Provide at least one complete “happy path” and one “error path”:
 1. `POST /auth/login` as `user1` → receive token.
 2. `GET /mail/2` with that token → receive mail details.
 
+   Admin viewing their and other members mail (Happy Path)
+   - Viewing their own mail 
+   - curl http://localhost:3000/mail/1 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NjkwNjkwMiwiZXhwIjoxNzc2OTEwNTAyfQ.EEUoNl2NfcB-BbECmvzdcyG0JaUslzpNTneFKpqw4RY"
+   - {"id":1,"userId":1,"subject":"System Notice","body":"Welcome, admin!"}
+
+   - Viewing user1's mail
+   - curl http://localhost:3000/mail/2 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NjkwNjkwMiwiZXhwIjoxNzc2OTEwNTAyfQ.EEUoNl2NfcB-BbECmvzdcyG0JaUslzpNTneFKpqw4RY" 
+   - {"id":2,"userId":2,"subject":"Hello User1","body":"Your report is ready."} 
+
+   - Viewing user2's mail
+   - curl http://localhost:3000/mail/3 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NjkwNjkwMiwiZXhwIjoxNzc2OTEwNTAyfQ.EEUoNl2NfcB-BbECmvzdcyG0JaUslzpNTneFKpqw4RY"
+   - {"id":3,"userId":3,"subject":"Hello User2","body":"You have a new message."}
+
+
 Include the exact curl commands and example responses.
 
 ### 7.2 Error Path: User Accessing Someone Else’s Mail
@@ -221,3 +245,7 @@ Include the exact curl commands and example responses.
 1. Login as `user1`.
 2. `GET /mail/1` (which belongs to another user).
 3. Show the `403` response.
+
+  User1 tries to view Admin's mail (Error Path)
+  - curl http://localhost:3000/mail/1 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzc2OTEwOTUwLCJleHAiOjE3NzY5MTQ1NTB9.SUzRAYLWjN1hNp7-aotkKe_hNTaZrUtg7ZBGzc_QcGM"
+  - {"error":"Forbidden","message":"Forbidden","statusCode":403,"requestId":"req-19db825c2e1-a1eff5","timestamp":"2026-04-23T02:22:55.716Z"}
