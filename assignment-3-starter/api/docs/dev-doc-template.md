@@ -101,6 +101,10 @@ Authenticate with username/password and receive a JWT.
 }
 ```
 
+   User tries to access something they are not authorized to they get the below error
+   - curl http://localhost:3000/mail/1
+   - {"error":"Unathorized","message":"Missing Authorization header","statusCode":401,"requestId":"req-19dbb08c82f-378d25","timestamp":"2026-04-23T15:50:08.202Z"}
+
 **Notes:**
 Document any common failure reasons (invalid credentials, missing fields).
 
@@ -149,7 +153,9 @@ curl http://localhost:3000/mail/2 \
   "timestamp": "2025-11-30T14:22:00Z"
 }
 ```
-
+      User tries to access mail that doesn't exist
+      - curl http://localhost:3000/mail/999 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3Njk2MDI3MywiZXhwIjoxNzc2OTYzODczfQ.7OtWZcVGMf5AiFjahHYcvctt1T9mgcriL7jHFHJpYrM"
+      - {"error":"Not Found","message":"Mail not found","statusCode":404,"requestId":"req-19dbb18f2c1-22742d","timestamp":"2026-04-23T16:07:47.658Z"}
 ---
 
 ### 4.3 `GET /status`
@@ -193,6 +199,9 @@ Describe how rate limiting works in your implementation.
 
 You can also mention if you set a `Retry-After` header or include a field in the JSON.
 
+      User issues too many requests
+      - for /l %i in (1,1,10) do curl -s http://localhost:3000/auth/login -H "Content-Type: application/json" -d "{\"username\": \"user1\", \"password\": \"user123\"}"
+      - {"error":"Too Many Requests","message":"Too Many Requests","statusCode":429,"requestId":"unknown","timestamp":"2026-04-23T15:59:28.801Z"}
 ---
 
 ## 6. Error Response Format
